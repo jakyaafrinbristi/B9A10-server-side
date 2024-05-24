@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const port =process.env.PORT || 9000
 
@@ -37,7 +37,13 @@ async function run() {
       res.send(result);
 
     })
-    //get a single card from mongo
+    //get a single card from mongodb
+    app.get('/card/:id',async(req,res)=>{
+      const id = req.params.id;
+      const query ={ _id: new ObjectId(id)}
+      const result=await craftCardCollection.findOne(query)
+      res.send(result)
+    })
 
     app.post('/cards',async(req,res)=>{
       const addCraftItem= req.body;
