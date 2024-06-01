@@ -45,6 +45,21 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/cards/:email',async(req,res)=>{
+      console.log(req.params)
+      const result = await craftCardCollection.find({email:req.params.email}).toArray();
+      res.send(result)
+
+    })
+    // delete single card
+    app.delete('/card/:id',async(req,res)=>{
+      const id = req.params.id;
+      const query ={ _id: new ObjectId(id)}
+      const result=await craftCardCollection.deleteOne(query)
+      res.send(result)
+    })
+    // post All cards
+
     app.post('/cards',async(req,res)=>{
       const addCraftItem= req.body;
       console.log(addCraftItem);
