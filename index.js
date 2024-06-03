@@ -46,6 +46,7 @@ async function run() {
     })
 
     app.get('/cards/:email',async(req,res)=>{
+
       console.log(req.params)
       const result = await craftCardCollection.find({email:req.params.email}).toArray();
       res.send(result)
@@ -66,6 +67,31 @@ async function run() {
       const result = await craftCardCollection.insertOne(addCraftItem)
       res.send(result);
     })
+    // update
+    app.put('/card/:id',async(req,res)=>{
+      const id=req.params.id;
+      const filter={_id : new ObjectId(id)};
+      const options ={upsert : true};
+      const updatedCraft=req.body;
+      const updated={
+        $set:{
+          item_name:updatedCraft.item_name,
+          subcategory_Name:updatedCraft.subcategory_Name,
+          price:updatedCraft.price,
+          rating:updatedCraft.rating,
+          processing:updatedCraft.processing,
+          image:updatedCraft.image,
+          description:updatedCraft.description,
+          customization:updatedCraft.customization,
+          stock:updatedCraft.stock,
+
+        }
+      }
+      const result=await craftCardCollection.updateOne(filter,updated,options);
+      res.send(result)
+
+    })
+
  
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
