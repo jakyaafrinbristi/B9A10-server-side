@@ -29,6 +29,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     const craftCardCollection=client.db('craftDB').collection('cards');
+    const artCardCollection=client.db('craftDB').collection('craft');
 
     // get all cards from mongo
     app.get('/cards',async(req,res)=>{
@@ -36,6 +37,21 @@ async function run() {
       const result =await cursor.toArray();
       res.send(result);
 
+    })
+    // get all card from mongo another collection
+    app.get('/crafts',async(req,res)=>{
+      const cursor =artCardCollection.find();
+      const result =await cursor.toArray();
+      
+      res.send(result)
+
+    })
+     //get a single card from mongodb another collection
+     app.get('/craft/:id',async(req,res)=>{
+      const id = req.params.id;
+      const query ={ _id: new ObjectId(id)}
+      const result=await artCardCollection.findOne(query)
+      res.send(result)
     })
     //get a single card from mongodb
     app.get('/card/:id',async(req,res)=>{
@@ -45,6 +61,7 @@ async function run() {
       res.send(result)
     })
 
+    // get mySingleCard
     app.get('/cards/:email',async(req,res)=>{
 
       console.log(req.params)
