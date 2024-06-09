@@ -1,12 +1,16 @@
 const express = require('express')
 const cors = require('cors')
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb')
 require('dotenv').config()
 const port =process.env.PORT || 9000
 
 const app = express()
 const corsOptions = {
-    origin:['http://localhost:5173','http://localhost:5174'],
+    origin:[
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'https://art-craft-project-e36fd.web.app'
+    ],
     credential: true,
     optionSuccessStatus: 200,
 }
